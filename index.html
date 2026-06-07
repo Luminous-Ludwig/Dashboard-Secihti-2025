@@ -1,0 +1,1068 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Becas CONAHCYT 2025 — Orientación para Estudiantes</title>
+<meta name="description" content="Explora las becas otorgadas por CONAHCYT en 2025. Filtra por país, institución, nivel y área. Descubre tus probabilidades reales." />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg-0: #0a0a14;
+    --bg-1: #11111f;
+    --bg-2: #181830;
+    --bg-card: rgba(28, 28, 54, 0.65);
+    --border: rgba(120, 120, 200, 0.18);
+    --text: #e9e9f5;
+    --text-dim: #a4a4c8;
+    --text-mute: #6e6e90;
+    --accent: #7c5cff;
+    --accent-2: #00d4ff;
+    --accent-3: #ff4d8a;
+    --accent-4: #2ee6a4;
+    --accent-5: #ffb648;
+    --grad: linear-gradient(135deg, #7c5cff 0%, #00d4ff 100%);
+    --grad-pink: linear-gradient(135deg, #ff4d8a 0%, #ffb648 100%);
+    --grad-green: linear-gradient(135deg, #2ee6a4 0%, #00d4ff 100%);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg-0);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(124, 92, 255, 0.18), transparent 50%),
+      radial-gradient(circle at 85% 80%, rgba(0, 212, 255, 0.12), transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(255, 77, 138, 0.06), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { position: relative; max-width: 1400px; margin: 0 auto; padding: 32px 24px 64px; z-index: 1; }
+
+  header { margin-bottom: 32px; }
+  .header-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 16px; margin-bottom: 16px;
+  }
+  .credit {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(28, 28, 54, 0.65);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.02em;
+    box-shadow: var(--shadow);
+  }
+  .credit b {
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+  }
+  @media (max-width: 640px) {
+    .header-top { flex-direction: column; }
+    .credit { align-self: flex-start; }
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px; border-radius: 999px;
+    background: rgba(124, 92, 255, 0.12);
+    border: 1px solid rgba(124, 92, 255, 0.35);
+    font-size: 12px; font-weight: 600;
+    color: var(--accent-2);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-4); box-shadow: 0 0 8px var(--accent-4); animation: pulse 2s infinite; }
+  @keyframes pulse { 50% { opacity: 0.4; } }
+
+  h1 {
+    margin: 0 0 8px;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .subtitle { color: var(--text-dim); font-size: 16px; max-width: 700px; }
+
+  /* Filters */
+  .filters {
+    position: relative;
+    z-index: 60;
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 18px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+  }
+  .filter-group { position: relative; }
+  .filter-group.open { z-index: 70; }
+  .filter-label { display: block; font-size: 11px; font-weight: 700; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .filter-btn {
+    width: 100%; text-align: left; cursor: pointer;
+    background: rgba(15, 15, 32, 0.7);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 36px 10px 12px;
+    border-radius: 10px;
+    font-size: 13px; font-weight: 500;
+    position: relative;
+    transition: border-color 0.15s;
+  }
+  .filter-btn:hover { border-color: rgba(124, 92, 255, 0.5); }
+  .filter-btn::after {
+    content: "▾"; position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--text-mute); font-size: 10px;
+  }
+  .filter-btn .count-badge {
+    display: inline-block; margin-left: 6px;
+    background: var(--accent); color: white;
+    padding: 1px 7px; border-radius: 10px; font-size: 11px; font-weight: 700;
+  }
+
+  .dropdown {
+    position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+    background: #161628;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    max-height: 320px;
+    overflow-y: auto;
+    z-index: 50;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+    display: none;
+  }
+  .dropdown.open { display: block; }
+  .dropdown-search {
+    position: sticky; top: 0; padding: 10px;
+    background: #161628; border-bottom: 1px solid var(--border);
+  }
+  .dropdown-search input {
+    width: 100%;
+    background: rgba(15, 15, 32, 0.7);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 10px; border-radius: 8px; font-size: 12px;
+  }
+  .dropdown-search input:focus { outline: none; border-color: var(--accent); }
+  .dropdown-actions {
+    display: flex; gap: 8px; padding: 0 10px 8px;
+  }
+  .dropdown-actions button {
+    flex: 1; cursor: pointer;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-dim); font-size: 11px; padding: 4px 8px;
+    border-radius: 6px; font-weight: 600;
+  }
+  .dropdown-actions button:hover { color: var(--accent-2); border-color: var(--accent-2); }
+  .dropdown-options { padding: 4px 0; }
+  .dropdown-option {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 12px; cursor: pointer;
+    font-size: 12.5px;
+  }
+  .dropdown-option:hover { background: rgba(124, 92, 255, 0.12); }
+  .dropdown-option input { accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+  .dropdown-option .opt-label { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dropdown-option .opt-count { color: var(--text-mute); font-size: 11px; }
+
+  .clear-btn {
+    background: linear-gradient(135deg, rgba(255, 77, 138, 0.2), rgba(255, 182, 72, 0.2));
+    border: 1px solid rgba(255, 77, 138, 0.4);
+    color: #ffb6c8; cursor: pointer;
+    padding: 0 16px; border-radius: 10px; font-size: 12px; font-weight: 600;
+    align-self: end;
+  }
+  .clear-btn:hover { background: linear-gradient(135deg, rgba(255, 77, 138, 0.35), rgba(255, 182, 72, 0.35)); }
+
+  /* KPI cards */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .kpi {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .kpi::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--grad);
+  }
+  .kpi.k2::before { background: var(--grad-pink); }
+  .kpi.k3::before { background: var(--grad-green); }
+  .kpi.k4::before { background: linear-gradient(135deg, #ffb648 0%, #ff4d8a 100%); }
+  .kpi-label { font-size: 11px; font-weight: 700; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.08em; }
+  .kpi-value { font-size: 32px; font-weight: 800; margin-top: 6px; letter-spacing: -0.02em; }
+  .kpi-sub { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+
+  /* Insight banner */
+  .insight {
+    background: linear-gradient(135deg, rgba(124, 92, 255, 0.12), rgba(0, 212, 255, 0.08));
+    border: 1px solid rgba(124, 92, 255, 0.35);
+    border-radius: 16px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .insight-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--grad); display: grid; place-items: center;
+    flex-shrink: 0; font-size: 18px;
+  }
+  .insight-text { font-size: 14px; color: var(--text); line-height: 1.55; }
+  .insight-text b { color: var(--accent-2); font-weight: 700; }
+
+  /* Charts grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+  .card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+    display: flex; flex-direction: column;
+  }
+  .card-title {
+    font-size: 13px; font-weight: 700; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin: 0 0 4px;
+  }
+  .card-subtitle { font-size: 12px; color: var(--text-mute); margin-bottom: 14px; }
+  .chart-wrap { position: relative; flex: 1; min-height: 240px; }
+  .col-6 { grid-column: span 6; }
+  .col-4 { grid-column: span 4; }
+  .col-8 { grid-column: span 8; }
+  .col-12 { grid-column: span 12; }
+  @media (max-width: 900px) {
+    .col-6, .col-4, .col-8 { grid-column: span 12; }
+  }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; max-height: 480px; overflow-y: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: left; padding: 10px 12px;
+    background: rgba(15, 15, 32, 0.9);
+    color: var(--text-mute);
+    font-weight: 700; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    position: sticky; top: 0; z-index: 1;
+    border-bottom: 1px solid var(--border);
+  }
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { color: var(--accent-2); }
+  td { padding: 10px 12px; border-bottom: 1px solid rgba(120, 120, 200, 0.08); }
+  tr:hover td { background: rgba(124, 92, 255, 0.06); }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .bar-cell { position: relative; min-width: 100px; }
+  .bar-fill {
+    position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    height: 4px; background: var(--grad); border-radius: 2px; opacity: 0.7;
+  }
+  .table-search {
+    width: 100%; max-width: 320px;
+    background: rgba(15, 15, 32, 0.7);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px; border-radius: 8px; font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  /* Loader */
+  #loader {
+    position: fixed; inset: 0; background: var(--bg-0);
+    display: grid; place-items: center; z-index: 100;
+    transition: opacity 0.4s;
+  }
+  #loader.hidden { opacity: 0; pointer-events: none; }
+  .spinner {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 3px solid rgba(124, 92, 255, 0.2);
+    border-top-color: var(--accent);
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader-text { margin-top: 16px; color: var(--text-dim); font-size: 14px; }
+
+  footer {
+    margin-top: 40px; padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 12px; color: var(--text-mute);
+  }
+  footer a { color: var(--accent-2); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* Selected chip */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .chip {
+    background: rgba(124, 92, 255, 0.2);
+    border: 1px solid rgba(124, 92, 255, 0.4);
+    color: var(--text); font-size: 11px;
+    padding: 3px 8px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .chip .x { cursor: pointer; color: var(--text-mute); font-weight: 700; }
+  .chip .x:hover { color: var(--accent-3); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg-1); }
+  ::-webkit-scrollbar-thumb { background: rgba(124, 92, 255, 0.3); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(124, 92, 255, 0.5); }
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div style="text-align:center">
+    <div class="spinner"></div>
+    <div class="loader-text">Cargando 96,104 becas…</div>
+  </div>
+</div>
+
+<div class="container">
+  <header>
+    <div class="header-top">
+      <div class="pill"><span class="dot"></span> Datos abiertos CONAHCYT · 2025</div>
+      <div class="credit">Desarrollado por <b>Mr. Ludwig</b></div>
+    </div>
+    <h1>¿Qué tan competida está la beca a la que vas a aplicar?</h1>
+    <p class="subtitle">
+      Dashboard interactivo con las <b id="hero-count">96,104</b> becas otorgadas durante 2025.
+      Filtra por país, institución, nivel y área para entender cuántos estudiantes
+      como tú la consiguieron, dónde se concentran y cuánto reciben en promedio.
+    </p>
+  </header>
+
+  <section class="filters" id="filters">
+    <div class="filter-group" data-field="pais">
+      <label class="filter-label">País destino</label>
+      <button class="filter-btn">Todos</button>
+    </div>
+    <div class="filter-group" data-field="nivel">
+      <label class="filter-label">Nivel de estudios</label>
+      <button class="filter-btn">Todos</button>
+    </div>
+    <div class="filter-group" data-field="area">
+      <label class="filter-label">Área del conocimiento</label>
+      <button class="filter-btn">Todas</button>
+    </div>
+    <div class="filter-group" data-field="modalidad">
+      <label class="filter-label">Modalidad</label>
+      <button class="filter-btn">Todas</button>
+    </div>
+    <div class="filter-group" data-field="entidad">
+      <label class="filter-label">Entidad (MX)</label>
+      <button class="filter-btn">Todas</button>
+    </div>
+    <div class="filter-group" data-field="anio_inicio">
+      <label class="filter-label">Año inicio beca</label>
+      <button class="filter-btn">Todos</button>
+    </div>
+    <button class="clear-btn" id="clearFilters">Limpiar filtros</button>
+  </section>
+
+  <div class="chips" id="activeChips"></div>
+
+  <section class="insight" id="insightBanner">
+    <div class="insight-icon">💡</div>
+    <div class="insight-text" id="insightText">
+      Selecciona filtros arriba para ver insights personalizados sobre tus probabilidades.
+    </div>
+  </section>
+
+  <section class="kpis">
+    <div class="kpi">
+      <div class="kpi-label">Becas en la selección</div>
+      <div class="kpi-value" id="kpi-becas">—</div>
+      <div class="kpi-sub" id="kpi-becas-sub">de 96,104 totales</div>
+    </div>
+    <div class="kpi k2">
+      <div class="kpi-label">Inversión total (MXN)</div>
+      <div class="kpi-value" id="kpi-importe">—</div>
+      <div class="kpi-sub" id="kpi-importe-sub">pagado en 2025</div>
+    </div>
+    <div class="kpi k3">
+      <div class="kpi-label">Instituciones únicas</div>
+      <div class="kpi-value" id="kpi-inst">—</div>
+      <div class="kpi-sub" id="kpi-inst-sub">con becarios</div>
+    </div>
+    <div class="kpi k4">
+      <div class="kpi-label">Importe promedio anual</div>
+      <div class="kpi-value" id="kpi-prom">—</div>
+      <div class="kpi-sub" id="kpi-prom-sub">por becario</div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <div class="card col-6">
+      <h3 class="card-title">Distribución por país destino</h3>
+      <div class="card-subtitle">Top 10 países donde se otorgaron las becas</div>
+      <div class="chart-wrap"><canvas id="chPais"></canvas></div>
+    </div>
+    <div class="card col-6">
+      <h3 class="card-title">Nivel de estudios</h3>
+      <div class="card-subtitle">¿Maestría, doctorado, especialidad?</div>
+      <div class="chart-wrap"><canvas id="chNivel"></canvas></div>
+    </div>
+
+    <div class="card col-8">
+      <h3 class="card-title">Top 15 instituciones</h3>
+      <div class="card-subtitle">Las universidades con más becas otorgadas</div>
+      <div class="chart-wrap" style="min-height:420px"><canvas id="chInst"></canvas></div>
+    </div>
+    <div class="card col-4">
+      <h3 class="card-title">Áreas del conocimiento</h3>
+      <div class="card-subtitle">Dónde se invierte el apoyo</div>
+      <div class="chart-wrap" style="min-height:420px"><canvas id="chArea"></canvas></div>
+    </div>
+
+    <div class="card col-8">
+      <h3 class="card-title">Becas por entidad federativa (México)</h3>
+      <div class="card-subtitle">Estados con más becarios CONAHCYT</div>
+      <div class="chart-wrap"><canvas id="chEntidad"></canvas></div>
+    </div>
+    <div class="card col-4">
+      <h3 class="card-title">Modalidad</h3>
+      <div class="card-subtitle">Tipo de programa</div>
+      <div class="chart-wrap"><canvas id="chModalidad"></canvas></div>
+    </div>
+
+    <div class="card col-6">
+      <h3 class="card-title">Importe promedio anual por nivel</h3>
+      <div class="card-subtitle">Cuánto se paga al año según el nivel (MXN)</div>
+      <div class="chart-wrap"><canvas id="chImporteNivel"></canvas></div>
+    </div>
+    <div class="card col-6">
+      <h3 class="card-title">Tendencia por año de inicio</h3>
+      <div class="card-subtitle">Cohortes activas en 2025</div>
+      <div class="chart-wrap"><canvas id="chAnio"></canvas></div>
+    </div>
+
+    <div class="card col-12">
+      <h3 class="card-title">Ranking detallado de instituciones</h3>
+      <div class="card-subtitle">Busca tu universidad y compara su participación</div>
+      <input type="text" class="table-search" id="tableSearch" placeholder="Buscar institución…" />
+      <div class="table-wrap">
+        <table id="instTable">
+          <thead>
+            <tr>
+              <th class="sortable" data-sort="name">Institución</th>
+              <th class="sortable num" data-sort="count">Becas</th>
+              <th class="sortable num" data-sort="pct">% del total</th>
+              <th class="sortable num" data-sort="avg">Importe prom. (MXN)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>
+      Fuente: <a href="https://www.gob.mx/conahcyt" target="_blank" rel="noopener">CONAHCYT</a> — Padrón de becarios 2025 (datos abiertos).
+      Este dashboard es una herramienta de orientación; no garantiza la aprobación de futuras becas.
+      <br />Hecho para estudiantes que quieren tomar decisiones informadas.
+    </p>
+  </footer>
+</div>
+
+<script>
+/* ============== Estado y carga ============== */
+const STATE = {
+  data: null,
+  filters: { pais: new Set(), nivel: new Set(), area: new Set(), modalidad: new Set(), entidad: new Set(), anio_inicio: new Set() },
+  charts: {},
+  tableSort: { key: "count", dir: "desc" },
+  tableSearch: "",
+};
+
+const COLORS = ["#7c5cff", "#00d4ff", "#ff4d8a", "#2ee6a4", "#ffb648", "#a78bfa", "#34d399", "#fb7185", "#60a5fa", "#f59e0b", "#c084fc", "#22d3ee", "#fbbf24", "#f472b6", "#4ade80"];
+
+const fmtInt = (n) => new Intl.NumberFormat("es-MX").format(n);
+const fmtMoney = (n) => {
+  if (n >= 1e9) return "$" + new Intl.NumberFormat("es-MX", { maximumFractionDigits: 0 }).format(n / 1e6) + " M";
+  if (n >= 1e6) return "$" + (n / 1e6).toFixed(2) + " M";
+  return "$" + new Intl.NumberFormat("es-MX", { maximumFractionDigits: 0 }).format(n);
+};
+const fmtPct = (n) => (n * 100).toFixed(1) + "%";
+
+async function loadData() {
+  const res = await fetch("data.json");
+  if (!res.ok) throw new Error("No se pudo cargar data.json");
+  STATE.data = await res.json();
+}
+
+/* ============== Filtros ============== */
+function buildFilters() {
+  const data = STATE.data;
+  const fields = ["pais", "nivel", "area", "modalidad", "entidad", "anio_inicio"];
+  const fieldCounts = {};
+  for (const f of fields) fieldCounts[f] = new Map();
+  const N = data.rows.importe.length;
+  for (let i = 0; i < N; i++) {
+    for (const f of fields) {
+      const v = data.rows[f][i];
+      fieldCounts[f].set(v, (fieldCounts[f].get(v) || 0) + 1);
+    }
+  }
+
+  document.querySelectorAll(".filter-group").forEach(group => {
+    const field = group.dataset.field;
+    const btn = group.querySelector(".filter-btn");
+    const isYear = field === "anio_inicio";
+    const labels = isYear
+      ? data.meta.anios.map(y => [y, String(y)])
+      : data.lookups[field].map((label, i) => [i, label]);
+    const sorted = labels
+      .map(([code, label]) => ({ code, label, count: fieldCounts[field].get(code) || 0 }))
+      .filter(o => o.count > 0)
+      .sort((a, b) => b.count - a.count);
+
+    const dropdown = document.createElement("div");
+    dropdown.className = "dropdown";
+    dropdown.innerHTML = `
+      <div class="dropdown-search">
+        <input placeholder="Buscar…" />
+        <div class="dropdown-actions">
+          <button data-act="all">Todos</button>
+          <button data-act="none">Ninguno</button>
+        </div>
+      </div>
+      <div class="dropdown-options"></div>
+    `;
+    const optsEl = dropdown.querySelector(".dropdown-options");
+    sorted.forEach(opt => {
+      const row = document.createElement("label");
+      row.className = "dropdown-option";
+      row.innerHTML = `
+        <input type="checkbox" value="${opt.code}" />
+        <span class="opt-label" title="${opt.label}">${opt.label}</span>
+        <span class="opt-count">${fmtInt(opt.count)}</span>
+      `;
+      row.querySelector("input").addEventListener("change", (e) => {
+        const code = isYear ? Number(e.target.value) : Number(e.target.value);
+        if (e.target.checked) STATE.filters[field].add(code);
+        else STATE.filters[field].delete(code);
+        updateFilterButton(field);
+        rerender();
+      });
+      optsEl.appendChild(row);
+    });
+
+    const searchInput = dropdown.querySelector("input");
+    searchInput.addEventListener("input", () => {
+      const q = searchInput.value.toLowerCase();
+      optsEl.querySelectorAll(".dropdown-option").forEach(row => {
+        row.style.display = row.querySelector(".opt-label").textContent.toLowerCase().includes(q) ? "" : "none";
+      });
+    });
+    searchInput.addEventListener("click", e => e.stopPropagation());
+
+    dropdown.querySelector("[data-act=all]").addEventListener("click", (e) => {
+      e.stopPropagation();
+      const visible = [...optsEl.querySelectorAll(".dropdown-option")].filter(r => r.style.display !== "none");
+      visible.forEach(r => {
+        const cb = r.querySelector("input");
+        if (!cb.checked) {
+          cb.checked = true;
+          STATE.filters[field].add(Number(cb.value));
+        }
+      });
+      updateFilterButton(field);
+      rerender();
+    });
+    dropdown.querySelector("[data-act=none]").addEventListener("click", (e) => {
+      e.stopPropagation();
+      optsEl.querySelectorAll("input").forEach(cb => { cb.checked = false; });
+      STATE.filters[field].clear();
+      updateFilterButton(field);
+      rerender();
+    });
+
+    group.appendChild(dropdown);
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      document.querySelectorAll(".dropdown.open").forEach(d => {
+        if (d !== dropdown) { d.classList.remove("open"); d.parentElement.classList.remove("open"); }
+      });
+      dropdown.classList.toggle("open");
+      group.classList.toggle("open", dropdown.classList.contains("open"));
+    });
+  });
+
+  document.addEventListener("click", () => {
+    document.querySelectorAll(".dropdown.open").forEach(d => {
+      d.classList.remove("open");
+      d.parentElement.classList.remove("open");
+    });
+  });
+
+  document.getElementById("clearFilters").addEventListener("click", () => {
+    for (const f of fields) STATE.filters[f].clear();
+    document.querySelectorAll(".dropdown input[type=checkbox]").forEach(cb => cb.checked = false);
+    fields.forEach(updateFilterButton);
+    rerender();
+  });
+}
+
+function updateFilterButton(field) {
+  const group = document.querySelector(`.filter-group[data-field="${field}"]`);
+  const btn = group.querySelector(".filter-btn");
+  const sel = STATE.filters[field];
+  if (sel.size === 0) {
+    btn.innerHTML = field === "area" || field === "modalidad" || field === "entidad" ? "Todas" : "Todos";
+    return;
+  }
+  const labels = [...sel].map(code => labelFor(field, code));
+  const text = labels.length <= 2 ? labels.join(", ") : `${labels.length} seleccionados`;
+  btn.innerHTML = `${text} <span class="count-badge">${sel.size}</span>`;
+}
+
+function labelFor(field, code) {
+  if (field === "anio_inicio") return String(code);
+  return STATE.data.lookups[field][code];
+}
+
+function renderChips() {
+  const c = document.getElementById("activeChips");
+  c.innerHTML = "";
+  for (const [field, set] of Object.entries(STATE.filters)) {
+    for (const code of set) {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      chip.innerHTML = `<b>${fieldName(field)}:</b> ${labelFor(field, code)} <span class="x">×</span>`;
+      chip.querySelector(".x").addEventListener("click", () => {
+        STATE.filters[field].delete(code);
+        const cb = document.querySelector(`.filter-group[data-field="${field}"] input[value="${code}"]`);
+        if (cb) cb.checked = false;
+        updateFilterButton(field);
+        rerender();
+      });
+      c.appendChild(chip);
+    }
+  }
+}
+
+function fieldName(f) {
+  return { pais: "País", nivel: "Nivel", area: "Área", modalidad: "Modalidad", entidad: "Entidad", anio_inicio: "Año" }[f];
+}
+
+/* ============== Filtrado + agregación ============== */
+function applyFilters() {
+  const r = STATE.data.rows;
+  const N = r.importe.length;
+  const F = STATE.filters;
+  const has = {};
+  for (const k of Object.keys(F)) has[k] = F[k].size > 0;
+  const idx = [];
+  for (let i = 0; i < N; i++) {
+    if (has.pais && !F.pais.has(r.pais[i])) continue;
+    if (has.nivel && !F.nivel.has(r.nivel[i])) continue;
+    if (has.area && !F.area.has(r.area[i])) continue;
+    if (has.modalidad && !F.modalidad.has(r.modalidad[i])) continue;
+    if (has.entidad && !F.entidad.has(r.entidad[i])) continue;
+    if (has.anio_inicio && !F.anio_inicio.has(r.anio_inicio[i])) continue;
+    idx.push(i);
+  }
+  return idx;
+}
+
+function countBy(idx, field, topN) {
+  const r = STATE.data.rows[field];
+  const map = new Map();
+  for (const i of idx) {
+    const v = r[i];
+    map.set(v, (map.get(v) || 0) + 1);
+  }
+  const arr = [...map.entries()].map(([code, count]) => ({ code, label: labelFor(field, code), count }));
+  arr.sort((a, b) => b.count - a.count);
+  return topN ? arr.slice(0, topN) : arr;
+}
+
+function avgImporteBy(idx, field) {
+  const fr = STATE.data.rows[field];
+  const ir = STATE.data.rows.importe;
+  const sum = new Map();
+  const cnt = new Map();
+  for (const i of idx) {
+    const v = fr[i];
+    sum.set(v, (sum.get(v) || 0) + ir[i]);
+    cnt.set(v, (cnt.get(v) || 0) + 1);
+  }
+  return [...sum.keys()].map(code => ({
+    code, label: labelFor(field, code),
+    avg: sum.get(code) / cnt.get(code),
+    count: cnt.get(code),
+  })).sort((a, b) => b.avg - a.avg);
+}
+
+/* ============== Charts ============== */
+Chart.defaults.color = "#a4a4c8";
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif";
+Chart.defaults.borderColor = "rgba(120, 120, 200, 0.12)";
+
+function mkOrUpdate(id, type, data, opts) {
+  if (STATE.charts[id]) {
+    STATE.charts[id].data = data;
+    STATE.charts[id].options = opts;
+    STATE.charts[id].update();
+  } else {
+    const ctx = document.getElementById(id);
+    STATE.charts[id] = new Chart(ctx, { type, data, options: opts });
+  }
+}
+
+const baseOpts = (extra = {}) => ({
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { display: false },
+    tooltip: {
+      backgroundColor: "#181830",
+      borderColor: "rgba(120, 120, 200, 0.4)",
+      borderWidth: 1,
+      padding: 10,
+      titleColor: "#fff",
+      bodyColor: "#e9e9f5",
+    },
+  },
+  scales: {
+    x: { grid: { color: "rgba(120, 120, 200, 0.08)" }, ticks: { color: "#a4a4c8" } },
+    y: { grid: { color: "rgba(120, 120, 200, 0.08)" }, ticks: { color: "#a4a4c8" } },
+  },
+  ...extra,
+});
+
+function renderCharts(idx) {
+  /* País — donut top 10 */
+  const paisTop = countBy(idx, "pais", 10);
+  mkOrUpdate("chPais", "doughnut", {
+    labels: paisTop.map(o => o.label),
+    datasets: [{
+      data: paisTop.map(o => o.count),
+      backgroundColor: COLORS,
+      borderColor: "#0a0a14",
+      borderWidth: 2,
+    }],
+  }, {
+    responsive: true, maintainAspectRatio: false, cutout: "60%",
+    plugins: {
+      legend: { display: true, position: "right", labels: { boxWidth: 12, font: { size: 11 }, color: "#e9e9f5" } },
+      tooltip: {
+        backgroundColor: "#181830",
+        callbacks: {
+          label: (ctx) => `${ctx.label}: ${fmtInt(ctx.parsed)} (${fmtPct(ctx.parsed / idx.length)})`
+        }
+      }
+    }
+  });
+
+  /* Nivel — donut */
+  const nivelArr = countBy(idx, "nivel");
+  mkOrUpdate("chNivel", "doughnut", {
+    labels: nivelArr.map(o => o.label),
+    datasets: [{
+      data: nivelArr.map(o => o.count),
+      backgroundColor: COLORS,
+      borderColor: "#0a0a14",
+      borderWidth: 2,
+    }],
+  }, {
+    responsive: true, maintainAspectRatio: false, cutout: "55%",
+    plugins: {
+      legend: { display: true, position: "right", labels: { boxWidth: 12, font: { size: 11 }, color: "#e9e9f5" } },
+      tooltip: {
+        backgroundColor: "#181830",
+        callbacks: {
+          label: (ctx) => `${ctx.label}: ${fmtInt(ctx.parsed)} (${fmtPct(ctx.parsed / idx.length)})`
+        }
+      }
+    }
+  });
+
+  /* Instituciones — horizontal top 15 */
+  const instTop = countBy(idx, "institucion", 15);
+  mkOrUpdate("chInst", "bar", {
+    labels: instTop.map(o => o.label),
+    datasets: [{
+      label: "Becas",
+      data: instTop.map(o => o.count),
+      backgroundColor: instTop.map((_, i) => COLORS[i % COLORS.length]),
+      borderRadius: 6,
+    }],
+  }, baseOpts({
+    indexAxis: "y",
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${fmtInt(c.parsed.x)} becas (${fmtPct(c.parsed.x / idx.length)})` } } },
+    scales: { x: { grid: { color: "rgba(120, 120, 200, 0.08)" } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+  }));
+
+  /* Área — horizontal */
+  const areaArr = countBy(idx, "area");
+  mkOrUpdate("chArea", "bar", {
+    labels: areaArr.map(o => o.label.replace(/^[IVX]+\.\s*/, "")),
+    datasets: [{
+      data: areaArr.map(o => o.count),
+      backgroundColor: COLORS,
+      borderRadius: 4,
+    }],
+  }, baseOpts({
+    indexAxis: "y",
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${fmtInt(c.parsed.x)} becas` } } },
+    scales: { x: { grid: { color: "rgba(120, 120, 200, 0.08)" } }, y: { grid: { display: false }, ticks: { font: { size: 10 } } } }
+  }));
+
+  /* Entidad — vertical, solo MX */
+  const paisMxCode = STATE.data.lookups.pais.indexOf("MEXICO");
+  const mxIdx = idx.filter(i => STATE.data.rows.pais[i] === paisMxCode);
+  const entTop = countBy(mxIdx, "entidad", 20).filter(o => o.label !== "NO ESPECIFICADO");
+  mkOrUpdate("chEntidad", "bar", {
+    labels: entTop.map(o => o.label),
+    datasets: [{
+      data: entTop.map(o => o.count),
+      backgroundColor: "rgba(124, 92, 255, 0.85)",
+      borderRadius: 4,
+    }],
+  }, baseOpts({
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${fmtInt(c.parsed.y)} becarios` } } },
+    scales: { x: { ticks: { font: { size: 10 }, maxRotation: 50, minRotation: 50 } } }
+  }));
+
+  /* Modalidad — donut */
+  const modArr = countBy(idx, "modalidad").slice(0, 8);
+  mkOrUpdate("chModalidad", "doughnut", {
+    labels: modArr.map(o => o.label),
+    datasets: [{
+      data: modArr.map(o => o.count),
+      backgroundColor: COLORS,
+      borderColor: "#0a0a14",
+      borderWidth: 2,
+    }],
+  }, {
+    responsive: true, maintainAspectRatio: false, cutout: "55%",
+    plugins: {
+      legend: { display: true, position: "bottom", labels: { boxWidth: 10, font: { size: 10 }, color: "#e9e9f5" } },
+      tooltip: { callbacks: { label: c => `${c.label}: ${fmtInt(c.parsed)}` } }
+    }
+  });
+
+  /* Importe promedio por nivel */
+  const impNivel = avgImporteBy(idx, "nivel").filter(o => o.avg > 0).slice(0, 10);
+  mkOrUpdate("chImporteNivel", "bar", {
+    labels: impNivel.map(o => o.label),
+    datasets: [{
+      data: impNivel.map(o => Math.round(o.avg)),
+      backgroundColor: impNivel.map((_, i) => COLORS[i % COLORS.length]),
+      borderRadius: 6,
+    }],
+  }, baseOpts({
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `$${fmtInt(c.parsed.y)} MXN promedio` } } },
+    scales: { x: { ticks: { font: { size: 11 }, maxRotation: 30, minRotation: 30 } }, y: { ticks: { callback: v => "$" + fmtMoney(v).replace("$", "") } } }
+  }));
+
+  /* Tendencia por año */
+  const yearArr = countBy(idx, "anio_inicio").filter(o => o.code > 2015).sort((a, b) => a.code - b.code);
+  mkOrUpdate("chAnio", "line", {
+    labels: yearArr.map(o => o.label),
+    datasets: [{
+      label: "Becas iniciadas",
+      data: yearArr.map(o => o.count),
+      borderColor: "#00d4ff",
+      backgroundColor: "rgba(0, 212, 255, 0.15)",
+      fill: true,
+      tension: 0.35,
+      pointBackgroundColor: "#7c5cff",
+      pointBorderColor: "#fff",
+      pointRadius: 4,
+      pointHoverRadius: 6,
+    }],
+  }, baseOpts({
+    plugins: { legend: { display: false } }
+  }));
+}
+
+/* ============== KPIs e insight ============== */
+function renderKpis(idx) {
+  const total = STATE.data.meta.total_rows;
+  const r = STATE.data.rows;
+  let importe = 0;
+  const instSet = new Set();
+  for (const i of idx) { importe += r.importe[i]; instSet.add(r.institucion[i]); }
+  const avg = idx.length ? importe / idx.length : 0;
+
+  document.getElementById("kpi-becas").textContent = fmtInt(idx.length);
+  document.getElementById("kpi-becas-sub").textContent = idx.length === total
+    ? `${fmtInt(total)} totales en el padrón`
+    : `${fmtPct(idx.length / total)} del padrón nacional`;
+  document.getElementById("kpi-importe").textContent = fmtMoney(importe);
+  document.getElementById("kpi-importe-sub").textContent = `pagado en 2025 · M = millones de pesos`;
+  document.getElementById("kpi-inst").textContent = fmtInt(instSet.size);
+  document.getElementById("kpi-inst-sub").textContent = `recibieron al menos 1 becario`;
+  document.getElementById("kpi-prom").textContent = fmtMoney(avg);
+  document.getElementById("kpi-prom-sub").textContent = "promedio anual por becario";
+}
+
+function renderInsight(idx) {
+  const total = STATE.data.meta.total_rows;
+  const el = document.getElementById("insightText");
+  const sel = STATE.filters;
+  const activeFilters = Object.values(sel).reduce((s, set) => s + set.size, 0);
+
+  if (activeFilters === 0) {
+    const paisTop = countBy(STATE.data.rows.importe.map((_, i) => i), "pais", 3);
+    const totalAll = STATE.data.meta.total_rows;
+    el.innerHTML = `De las <b>${fmtInt(totalAll)}</b> becas del padrón 2025, el <b>${fmtPct(paisTop[0].count / totalAll)}</b> se otorgó para estudios en <b>${paisTop[0].label}</b>. Filtra por nivel, área o institución para ver dónde encaja tu perfil.`;
+    return;
+  }
+
+  if (idx.length === 0) {
+    el.innerHTML = `No hay becas que coincidan con esa combinación de filtros. Prueba quitando alguno — quizá tu perfil sea de los primeros en abrirse paso ahí.`;
+    return;
+  }
+
+  const instTop = countBy(idx, "institucion", 3);
+  const areaTop = countBy(idx, "area", 1);
+  const pct = idx.length / total;
+
+  const parts = [];
+  parts.push(`Con tus filtros: <b>${fmtInt(idx.length)}</b> becarios coinciden (${fmtPct(pct)} del padrón nacional).`);
+  if (instTop.length > 0) {
+    parts.push(`La institución líder es <b>${instTop[0].label}</b> con <b>${fmtInt(instTop[0].count)}</b> becas (${fmtPct(instTop[0].count / idx.length)} de la selección).`);
+  }
+  if (areaTop.length > 0 && !sel.area.size) {
+    parts.push(`El área más representada es <b>${areaTop[0].label.replace(/^[IVX]+\.\s*/, "")}</b>.`);
+  }
+  el.innerHTML = parts.join(" ");
+}
+
+/* ============== Tabla ============== */
+function renderTable(idx) {
+  const arr = countBy(idx, "institucion");
+  const sumByInst = new Map();
+  const ir = STATE.data.rows.importe;
+  const instR = STATE.data.rows.institucion;
+  for (const i of idx) {
+    sumByInst.set(instR[i], (sumByInst.get(instR[i]) || 0) + ir[i]);
+  }
+  const total = idx.length || 1;
+  let rows = arr.map(o => ({
+    name: o.label,
+    count: o.count,
+    pct: o.count / total,
+    avg: (sumByInst.get(o.code) || 0) / o.count,
+  }));
+  if (STATE.tableSearch) {
+    const q = STATE.tableSearch.toLowerCase();
+    rows = rows.filter(r => r.name.toLowerCase().includes(q));
+  }
+  const { key, dir } = STATE.tableSort;
+  rows.sort((a, b) => {
+    const av = a[key], bv = b[key];
+    if (typeof av === "string") return dir === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
+    return dir === "asc" ? av - bv : bv - av;
+  });
+  const top = rows.slice(0, 200);
+  const max = top.length ? top[0].count : 1;
+  const tbody = document.querySelector("#instTable tbody");
+  tbody.innerHTML = top.map(r => `
+    <tr>
+      <td>${r.name}</td>
+      <td class="num bar-cell">
+        <span class="bar-fill" style="width:${(r.count / max * 60).toFixed(1)}%"></span>
+        <span style="position:relative">${fmtInt(r.count)}</span>
+      </td>
+      <td class="num">${fmtPct(r.pct)}</td>
+      <td class="num">$${fmtInt(Math.round(r.avg))}</td>
+    </tr>
+  `).join("");
+}
+
+/* ============== Re-render orquestador ============== */
+function rerender() {
+  const idx = applyFilters();
+  renderKpis(idx);
+  renderInsight(idx);
+  renderCharts(idx);
+  renderChips();
+  renderTable(idx);
+}
+
+/* ============== Init ============== */
+async function init() {
+  try {
+    await loadData();
+  } catch (e) {
+    document.getElementById("loader").innerHTML = `<div style="text-align:center; color:#ffb6c8">
+      Error cargando data.json.<br/>Sirve esta carpeta con un servidor estático (no abras el HTML directo).<br/>
+      Ej: <code>python -m http.server</code></div>`;
+    return;
+  }
+  document.getElementById("hero-count").textContent = fmtInt(STATE.data.meta.total_rows);
+  buildFilters();
+
+  document.getElementById("tableSearch").addEventListener("input", (e) => {
+    STATE.tableSearch = e.target.value;
+    const idx = applyFilters();
+    renderTable(idx);
+  });
+  document.querySelectorAll("#instTable th.sortable").forEach(th => {
+    th.addEventListener("click", () => {
+      const key = th.dataset.sort;
+      if (STATE.tableSort.key === key) {
+        STATE.tableSort.dir = STATE.tableSort.dir === "asc" ? "desc" : "asc";
+      } else {
+        STATE.tableSort = { key, dir: key === "name" ? "asc" : "desc" };
+      }
+      renderTable(applyFilters());
+    });
+  });
+
+  rerender();
+  setTimeout(() => document.getElementById("loader").classList.add("hidden"), 200);
+}
+
+init();
+</script>
+</body>
+</html>
